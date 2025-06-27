@@ -5,8 +5,7 @@ import { type Movie } from "../types/movie.type";
 import { useEffect, useState } from 'react';
 import { useSearchParams } from "react-router-dom";
 
-const BASE_URL = 'https://api.themoviedb.org/3';
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+import { BASE_URL, API_KEY } from "../config/vars.config";
 
 export default function Home() {
     const [movies, setMovies] = useState<Movie[]>([]);

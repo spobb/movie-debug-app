@@ -3,11 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import { CircularProgress, Container, Alert, Box, Typography, Link as MuiLink, CardMedia, Button } from "@mui/material";
 
 import { addFavorite } from "../services/favorite.service";
-import storageService from "../services/storage.service";
 
-const BASE_URL = 'https://api.themoviedb.org/3';
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+import { BASE_URL, API_KEY, IMAGE_BASE_URL } from "../config/vars.config";
 
 type Movie = {
     id: number;
@@ -58,13 +55,6 @@ export default function MovieDetail() {
             }
         };
 
-        // brute forced it
-        const getFavorited = () => {
-            const favorites = storageService.get<Movie[]>('favorites');
-
-        }
-
-        getFavorited();
         fetchMovie();
     }, [id]);
 
