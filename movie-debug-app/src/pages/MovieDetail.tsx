@@ -23,8 +23,12 @@ export default function MovieDetail() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isFavorited, setIsFavorited] = useState<boolean>(false);
+    // favorited state is stored in local storage
+    // could add logic to set the state on component render 
+    // and therefore allow to not duplicate and to remove an already favorited movie
 
     const handleClick = () => {
+        // assert as non-null here because this function could never be called if the movie state is null - the components returns if error
         addFavorite(movie!);
         setIsFavorited(true);
     }
@@ -87,6 +91,7 @@ export default function MovieDetail() {
                     <Typography variant="body2" color="text.secondary">
                         Note moyenne : {movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'} ({movie.vote_count} votes)
                     </Typography>
+                    {/* 'on/off' state for favorite button - useful if there is a more proper implementation of the favorited state */}
                     <Button
                         variant="contained"
                         sx={{ mt: 2 }}

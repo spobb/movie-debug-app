@@ -12,6 +12,7 @@ function App() {
     const navigate = useNavigate();
 
     const handleSearch = () => {
+        // navigate to same page but with searchTerm -> Home element uses it to fetch with search instead
         navigate(`/?search=${searchTerm}`);
     };
 
@@ -47,9 +48,7 @@ function App() {
                     </MuiLink>
                 </Toolbar>
             </AppBar>
-            <Container
-            // maxWidth="lg"
-            >
+            <Container>
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/movie/:id" element={<MovieDetail />} />

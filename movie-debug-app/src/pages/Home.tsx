@@ -11,6 +11,7 @@ export default function Home() {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    //eslint-disable-next-line
     const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {

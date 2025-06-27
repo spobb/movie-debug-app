@@ -14,6 +14,7 @@ export function MovieCard({ movie }: { movie: Movie }) {
     const imageUrl = `${IMAGE_BASE_URL}${movie.poster_path}`;
 
     return (
+        // size attribute on the grid element adds a bit of responsiveness
         <Grid size={{ xs: 6, md: 4, lg: 3 }}>
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                 <CardMedia
