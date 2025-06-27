@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { CircularProgress, Container, Alert, Box, Typography, Link as MuiLink, CardMedia } from "@mui/material";
+import { CircularProgress, Container, Alert, Box, Typography, Link as MuiLink, CardMedia, Button } from "@mui/material";
+
+import { addFavorite } from "../services/favorite.service";
+import storageService from "../services/storage.service";
 
 const BASE_URL = 'https://api.themoviedb.org/3';
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -22,6 +25,12 @@ export default function MovieDetail() {
     const [movie, setMovie] = useState<Movie | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isFavorited, setIsFavorited] = useState<boolean>(false);
+
+    const handleClick = () => {
+        addFavorite(movie!);
+        setIsFavorited(true);
+    }
 
     useEffect(() => {
         if (!id) {
@@ -49,6 +58,13 @@ export default function MovieDetail() {
             }
         };
 
+        // brute forced it
+        const getFavorited = () => {
+            const favorites = storageService.get<Movie[]>('favorites');
+
+        }
+
+        getFavorited();
         fetchMovie();
     }, [id]);
 
@@ -81,9 +97,16 @@ export default function MovieDetail() {
                     <Typography variant="body2" color="text.secondary">
                         Note moyenne : {movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'} ({movie.vote_count} votes)
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-                        (Placeholder: Bouton Ajouter aux Favoris)
-                    </Typography>
+                    <Button
+                        variant="contained"
+                        sx={{ mt: 2 }}
+                        onClick={handleClick}
+                        disabled={isFavorited}
+                    >
+                        <Typography variant="body2" color="text.secondary">
+                            {isFavorited ? 'Favori' : 'Ajouter aux Favoris'}
+                        </Typography>
+                    </Button>
                 </Box>
             </Box>
             <Box sx={{ mt: 4 }}>
@@ -91,6 +114,6 @@ export default function MovieDetail() {
                     Retour à l'accueil
                 </MuiLink>
             </Box>
-        </Container>
+        </Container >
     );
 }

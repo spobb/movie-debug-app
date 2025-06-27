@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AppBar, Toolbar, Typography, Container, Link as MuiLink, Box, TextField, IconButton } from '@mui/material';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 
 import Home from './pages/Home';
@@ -9,9 +9,10 @@ import Favorites from './pages/Favorites';
 
 function App() {
     const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
 
     const handleSearch = () => {
-        console.log('Recherche pour:', searchTerm);
+        navigate(`/?search=${searchTerm}`);
     };
 
     return (
@@ -29,7 +30,7 @@ function App() {
                             size="small"
                             placeholder="Rechercher un film..."
                             value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onChange={(e) => { setSearchTerm(e.target.value) }}
                             sx={{
                                 input: { color: 'white' },
                                 fieldset: { borderColor: 'rgba(255, 255, 255, 0.7)' },
@@ -37,7 +38,7 @@ function App() {
                                 '&.Mui-focused fieldset': { borderColor: 'white' },
                             }}
                         />
-                        <IconButton color="inherit" onClick={handleSearch}>
+                        <IconButton color="inherit" onClick={handleSearch} type='submit'>
                             <SearchIcon />
                         </IconButton>
                     </Box>

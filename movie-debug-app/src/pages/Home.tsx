@@ -1,32 +1,29 @@
-import { useEffect, useState } from "react";
-
 import { CircularProgress, Container, Grid, Typography, Alert, Box } from "@mui/material";
-
 import { MovieCard } from "../ui/components/MovieCard";
+import { type Movie } from "../types/movie.type";
+
+import { useEffect, useState } from 'react';
+import { useSearchParams } from "react-router-dom";
 
 const BASE_URL = 'https://api.themoviedb.org/3';
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-
-type Movie = {
-    id: number;
-    title: string;
-    poster_path: string;
-    tagline: string;
-    overview: string;
-    release_date: string;
-    vote_average: number;
-    vote_count: number;
-};
 
 export default function Home() {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
         const fetchPopularMovies = async () => {
             try {
-                const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}`);
+                const searchTerm = searchParams.get('search');
+                let response;
+                if (searchTerm) {
+                    response = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&query=${searchTerm}`);
+                } else {
+                    response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}`);
+                }
 
                 if (!response.ok) {
                     const errorData = await response.json();
@@ -43,7 +40,7 @@ export default function Home() {
         };
 
         fetchPopularMovies()
-    }, []);
+    }, [movies, searchParams]);
 
     if (loading) return <CircularProgress sx={{ mt: 4 }} />;
     if (error) return <Alert severity="error" sx={{ mt: 4 }}>{error}</Alert>;
